@@ -1,0 +1,27 @@
+name: Build and Push - v2
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      docker-tag:
+        description: "Docker tag (e.g., v1.0 or latest)"
+        type: string
+        required: false
+        default: "demo"
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Build and Push Docker Image
+        uses: ./.github/actions/build-and-push
+        with:
+          docker-tag: ${{ inputs.docker-tag }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
